@@ -38,7 +38,7 @@ devDependencies:
     specifier: ^0.4.5
     version: 0.4.5(eslint@8.56.0)
   vite:
-    specifier: ^5.0.8
+    specifier: ^5.0.12
     version: 5.0.12
 
 packages:

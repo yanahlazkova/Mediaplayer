@@ -8,21 +8,6 @@ import { useState } from "react";
 // navicon.addEventListener("click", () => alert("sfasfs"));
 export default function Player() {
 
-  // return (
-  //   <div>
-  //     {navicon ? navicon.addEventListener("click", showListTracks) : console.error(`Элемент с классом ".fa.fa-ellipsis-h" не найден`)}
-  //     {isDropdownOpen && (
-  //       <ul>
-  //         <li>Track 1</li>
-  //         <li>Track 2</li>
-  //         <li>Track 3</li>
-  //         {/* Здесь могут быть другие треки */}
-  //       </ul>
-  //     )}
-      
-  //   </div>
-  // )
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Назначаем событие на кнопку Бургер-меню

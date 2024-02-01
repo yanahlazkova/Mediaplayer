@@ -1,8 +1,11 @@
-import './styles.css'
-import { trackList } from './tracks';
-export default function ListTracks () {
-    console.log("ListTracks");
-    
-    const tracks = trackList.map((track, index) => <li key={index + 1}>{track.title}</li>)
-    return <ul className='dropdown-list'>{tracks}</ul>
+import { trackList } from "./tracks"
+export default function ListTracks(){
+    const track = trackList.map(track => <div><img className="preview" src={track.preview}/><div>{track.artists}</div><div>{track.title}</div></div>)
+    return (
+    <>
+        <div>
+            {track}
+        </div>       
+            </>
+    )
 }

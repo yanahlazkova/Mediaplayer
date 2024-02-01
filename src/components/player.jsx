@@ -1,4 +1,4 @@
-import ListTracks from "./track/ListTracks";
+import ListTracks from "./track/List";
 import { useState } from "react";
 
 /* Компоненты всегда нужно называть с большой буквы. Не player, а Player */
@@ -29,6 +29,8 @@ export default function Player() {
   }
 
   return (
+  <>
+    {/* <ListTracks/> */}
     <div className="wrapper">
       <div className="player__container">
         <div className="player__body">
@@ -119,6 +121,7 @@ export default function Player() {
         </div>
       </div>
     </div>
+    </>
   );
   
   

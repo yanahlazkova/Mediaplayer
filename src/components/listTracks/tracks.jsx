@@ -5,8 +5,8 @@ export const trackList = [
     preview:
       "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/154/1000x0/no-way-back-1656410436-lmCSrM15Fp.jpg",
     duration: 215,
-    title: "No Way Back",
-    artists: "Custody",
+    title: "The lady in red",
+    artists: "Chris De Burgh",
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ export const trackList = [
     spreview:
       "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/113/1000x0/falling-1649412036-lkoB5hiJq8.jpg",
     duration: 159,
-    title: "Falling",
+    title: "Missing You",
     artists: "Rival, CRVN",
   },
   {

@@ -1,29 +1,54 @@
 import { useState } from "react";
+import IconPlayPause from "./iconPlayPause";
+import { trackList } from "./tracks";
 
 export default function Player() {
-  const [curentTrackIndex, setCurentTrackIndex] = useState(0);
-  // const [curentTrack, setCurentTrack] = useState(trackList[0]);
+  let playTrack = false;
+  let curentTrackIndex = 0;
+  const audio = new Audio(trackList[curentTrackIndex].src);
+  let [isPlay, setIsPlay] = useState("fa fa-play");
 
   const PlayTrack = () => {
-    // play track
-    console.log("Curent track", curentTrackIndex);
+    console.log(audio);
+    console.log("OnClick!!!");
+    //если трек проигрывается, то останавливаем его (и наоборот), меняем иконку
+    playTrack = !playTrack;
+    // isPlay = playTrack ? "fa fa-pause" : "fa fa-play";
+    // setIsPlay(isPlay);
+    playTrack ? audio.play() : audio.pause();
+
+    console.log(
+      "Curent track",
+      curentTrackIndex,
+      trackList[curentTrackIndex].title
+    );
+    console.log("isPlay", isPlay);
   };
   const PlayBackTrack = () => {
-    console.log("curent track index", curentTrackIndex);
-    if (curentTrackIndex == 0) {
-      setCurentTrackIndex(12);
-      console.log("working if");
-    } else {
-      setCurentTrackIndex(curentTrackIndex - 1);
-      console.log("working else");
-    }
-    // curentTrackIndex == 0
-    //   ? setCurentTrackIndex(trackList.length - 1)
-    //   : setCurentTrackIndex(curentTrackIndex - 1);
-    PlayTrack();
-    console.log("curent track index", curentTrackIndex);
+    curentTrackIndex == 0
+      ? (curentTrackIndex = trackList.length - 1)
+      : (curentTrackIndex = curentTrackIndex - 1);
+    // меняем url текущего трека
+    audio.src = trackList[curentTrackIndex].src;
+    console.log(
+      "Back track index",
+      curentTrackIndex,
+      trackList[curentTrackIndex].title
+    );
+    playTrack && audio.play();
   };
-  const PlayNextTrack = () => {};
+  const PlayNextTrack = () => {
+    curentTrackIndex =
+      curentTrackIndex == trackList.length - 1 ? 0 : curentTrackIndex + 1;
+    audio.src = trackList[curentTrackIndex].src;
+
+    console.log(
+      "Next track index",
+      curentTrackIndex,
+      trackList[curentTrackIndex].title
+    );
+    playTrack && audio.play();
+  };
 
   return (
     <>
@@ -78,7 +103,11 @@ export default function Player() {
 
                 <li>
                   <a href="#" className="list__link">
-                    <i className="fa fa-play" onClick={PlayTrack}></i>
+                    {/* <i
+                      className={`fa fa-${iconPlay ? "play" : "pause"}`}
+                      onClick={PlayTrack()}
+                    ></i> */}
+                    <IconPlayPause nameClass={isPlay} onSetIcon={PlayTrack} />
                   </a>
                 </li>
 

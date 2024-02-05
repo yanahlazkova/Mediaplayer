@@ -1,81 +1,94 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PlayPause from "./PlayPause";
 import { trackList } from "./tracks";
-import { useRef } from "react";
 
 export default function Player() {
-  // let playTrack = false;
-  let curentTrackIndex = 0;
+  const [curentTrackIndex, setCurentTrackIndex] = useState(0);
   const audioRef = useRef(new Audio(trackList[0].src));
-  const [stateAudio, setStateAudio] = useState(true) //image play
-  // const [isPlay, setIsPlay] = useState("fa fa-play");
-  
-    const PlayTrack = () => {
-      const audio = audioRef.current;
+  const [stateAudio, setStateAudio] = useState(true); //image play, track is stoping
+  const [dateCurentTrack, setDateCurentTrack] = useState({});
+
+  useEffect(
+    () => {
+      setDateCurentTrack({
+        title: trackList[curentTrackIndex].title,
+        artists: trackList[curentTrackIndex].artists,
+      });
+      // setCurentTrackIndex(0);
+    },
+    [curentTrackIndex]
+    // [dateCurentTrack]
+  );
+
+  const PlayTrack = () => {
+    const audio = audioRef.current;
     console.log("image play? - ", `${!stateAudio ? "play" : "pause"}`);
 
-      if (stateAudio) {
-        audio.play();
-        // setIsPlay("fa fa-play");
-        setStateAudio(false)
-      } else {
-        audio.pause();
-        setStateAudio(true)
-        // setIsPlay("fa fa-pause");
-      }
-      
-      console.log(
-          "Curent track",
-          curentTrackIndex,
-          trackList[curentTrackIndex].title
-        );
-        
-    };
+    if (audio.paused) {
+      audio.play();
+      setStateAudio(false);
+    } else {
+      audio.pause();
+      setStateAudio(true);
+    }
 
-    
-  // useEffect(() => {
-  //   // PlayTrack();
-  //   console.log(stateAudio);
-  // }, [stateAudio])
-  
+    console.log(
+      "Curent track",
+      curentTrackIndex,
+      trackList[curentTrackIndex].title
+    );
+  };
+
   const PlayBackTrack = () => {
     const audio = audioRef.current;
-    curentTrackIndex == 0
-    ? (curentTrackIndex = trackList.length - 1)
-    : (curentTrackIndex = curentTrackIndex - 1);
-    // меняем url текущего трека
-    audio.src = trackList[curentTrackIndex].src;
+    const newIndex =
+      curentTrackIndex == 0 ? trackList.length - 1 : curentTrackIndex - 1;
+    setCurentTrackIndex(newIndex);
+    // вывод данных трека
+    const dataTrack = {
+      title: trackList[curentTrackIndex].title,
+      artists: trackList[curentTrackIndex].artists,
+    };
+    setDateCurentTrack(dataTrack);
+
+    console.log("useState - ", dateCurentTrack);
+
+    console.log("image play? - ", stateAudio);
+    if (!audio.paused) {
+      // меняем url текущего трека
+      audio.src = trackList[curentTrackIndex].src;
+      console.log("проигрывается");
+      PlayTrack();
+    }
     console.log(
       "Back track index",
       curentTrackIndex,
       trackList[curentTrackIndex].title
-      );
-    
-    // !audio.paused && audio.play();
-    console.log("image play? - ", stateAudio);
-    if (!audio.paused) {
-      PlayTrack(); 
-      !stateAudio;
-    }
-    
+    );
   };
   const PlayNextTrack = () => {
     const audio = audioRef.current;
     curentTrackIndex =
       curentTrackIndex == trackList.length - 1 ? 0 : curentTrackIndex + 1;
-    audio.src = trackList[curentTrackIndex].src;
 
+    // вывод данных трека
+    setDateCurentTrack({
+      title: trackList[curentTrackIndex].title,
+      artists: trackList[curentTrackIndex].artists,
+    });
+
+    console.log("image play? - ", stateAudio);
+    if (!audio.paused) {
+      // меняем url текущего трека
+      audio.src = trackList[curentTrackIndex].src;
+      console.log("проигрывается");
+      PlayTrack();
+    }
     console.log(
       "Next track index",
       curentTrackIndex,
       trackList[curentTrackIndex].title
     );
-    // !audio.paused && audio.play();
-    if (!audio.paused) {
-      PlayTrack(); 
-      !stateAudio;
-    }
-    
   };
 
   return (
@@ -111,11 +124,12 @@ export default function Player() {
             </div>
 
             <div className="body__info">
+              {/* <TreckDate /> */}
               <div className="info__album">The Hunting Party</div>
 
-              <div className="info__song">Final Masquerade</div>
+              <div className="info__song">{dateCurentTrack.title}</div>
 
-              <div className="info__artist">Linkin Park</div>
+              <div className="info__artist">{dateCurentTrack.artists}</div>
             </div>
 
             <div className="body__buttons">
@@ -130,12 +144,10 @@ export default function Player() {
                 </li>
 
                 <li>
-                  {/* <a href="#" className="list__link"> */}
-                    {/* <i
-                      className={`fa fa-${iconPlay ? "play" : "pause"}`}
-                      onClick={PlayTrack()}
-                    ></i> */}
-                    <PlayPause nameClass={`fa fa-${stateAudio ? 'play' : 'pause'}`} onSetIcon={PlayTrack} />
+                  <PlayPause
+                    nameClass={`fa fa-${stateAudio ? "play" : "pause"}`}
+                    onSetIcon={PlayTrack}
+                  />
                   {/* </a> */}
                 </li>
 

@@ -1,43 +1,66 @@
 import { useState } from "react";
-import IconPlayPause from "./iconPlayPause";
+import PlayPause from "./PlayPause";
 import { trackList } from "./tracks";
+import { useRef } from "react";
 
 export default function Player() {
-  let playTrack = false;
+  // let playTrack = false;
   let curentTrackIndex = 0;
-  const audio = new Audio(trackList[curentTrackIndex].src);
-  let [isPlay, setIsPlay] = useState("fa fa-play");
+  const audioRef = useRef(new Audio(trackList[0].src));
+  const [stateAudio, setStateAudio] = useState(true) //image play
+  // const [isPlay, setIsPlay] = useState("fa fa-play");
+  
+    const PlayTrack = () => {
+      const audio = audioRef.current;
+    console.log("image play? - ", `${!stateAudio ? "play" : "pause"}`);
 
-  const PlayTrack = () => {
-    console.log(audio);
-    console.log("OnClick!!!");
-    //если трек проигрывается, то останавливаем его (и наоборот), меняем иконку
-    playTrack = !playTrack;
-    // isPlay = playTrack ? "fa fa-pause" : "fa fa-play";
-    // setIsPlay(isPlay);
-    playTrack ? audio.play() : audio.pause();
+      if (stateAudio) {
+        audio.play();
+        // setIsPlay("fa fa-play");
+        setStateAudio(false)
+      } else {
+        audio.pause();
+        setStateAudio(true)
+        // setIsPlay("fa fa-pause");
+      }
+      
+      console.log(
+          "Curent track",
+          curentTrackIndex,
+          trackList[curentTrackIndex].title
+        );
+        
+    };
 
-    console.log(
-      "Curent track",
-      curentTrackIndex,
-      trackList[curentTrackIndex].title
-    );
-    console.log("isPlay", isPlay);
-  };
+    
+  // useEffect(() => {
+  //   // PlayTrack();
+  //   console.log(stateAudio);
+  // }, [stateAudio])
+  
   const PlayBackTrack = () => {
+    const audio = audioRef.current;
     curentTrackIndex == 0
-      ? (curentTrackIndex = trackList.length - 1)
-      : (curentTrackIndex = curentTrackIndex - 1);
+    ? (curentTrackIndex = trackList.length - 1)
+    : (curentTrackIndex = curentTrackIndex - 1);
     // меняем url текущего трека
     audio.src = trackList[curentTrackIndex].src;
     console.log(
       "Back track index",
       curentTrackIndex,
       trackList[curentTrackIndex].title
-    );
-    playTrack && audio.play();
+      );
+    
+    // !audio.paused && audio.play();
+    console.log("image play? - ", stateAudio);
+    if (!audio.paused) {
+      PlayTrack(); 
+      !stateAudio;
+    }
+    
   };
   const PlayNextTrack = () => {
+    const audio = audioRef.current;
     curentTrackIndex =
       curentTrackIndex == trackList.length - 1 ? 0 : curentTrackIndex + 1;
     audio.src = trackList[curentTrackIndex].src;
@@ -47,7 +70,12 @@ export default function Player() {
       curentTrackIndex,
       trackList[curentTrackIndex].title
     );
-    playTrack && audio.play();
+    // !audio.paused && audio.play();
+    if (!audio.paused) {
+      PlayTrack(); 
+      !stateAudio;
+    }
+    
   };
 
   return (
@@ -102,13 +130,13 @@ export default function Player() {
                 </li>
 
                 <li>
-                  <a href="#" className="list__link">
+                  {/* <a href="#" className="list__link"> */}
                     {/* <i
                       className={`fa fa-${iconPlay ? "play" : "pause"}`}
                       onClick={PlayTrack()}
                     ></i> */}
-                    <IconPlayPause nameClass={isPlay} onSetIcon={PlayTrack} />
-                  </a>
+                    <PlayPause nameClass={`fa fa-${stateAudio ? 'play' : 'pause'}`} onSetIcon={PlayTrack} />
+                  {/* </a> */}
                 </li>
 
                 <li>
